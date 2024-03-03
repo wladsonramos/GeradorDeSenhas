@@ -1,7 +1,26 @@
+import { useState } from 'react'
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import Slider from '@react-native-community/slider'
 
+let charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
 export default function App(){
+  const [size, setSize] = useState(10)
+  const [passwordValue, setPasswordValue] = useState("")
+
+  function generatePassword(){
+    
+    let password = "";
+
+    for(let i = 0, n = charset.length; i < size; i++){
+      password += charset.charAt(Math.floor(Math.random() * n))
+    }
+
+    setPasswordValue(password)
+
+  }
+
+
   return(
     <View style={styles.container}>
       <Image
@@ -9,7 +28,7 @@ export default function App(){
         style={styles.logo}
       />
 
-      <Text style={styles.title}>20 caracteres</Text>
+      <Text style={styles.title}>{size} caracteres</Text>
 
       <View style={styles.area}>
         <Slider
@@ -19,10 +38,12 @@ export default function App(){
           maximumTrackTintColor="#ff0000"
           minimumTrackTintColor="#000"
           thumbTintColor="#392de9"
+          value={size}
+          onValueChange={ (value) => setSize(value.toFixed(0)) }
         />
       </View>
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={generatePassword}>
         <Text style={styles.buttonText}>Gerar senha</Text>
       </TouchableOpacity>
 
